@@ -49,7 +49,6 @@ class TryRow(Row):
         """
         for i in range(4):
             if ((self.code_part[i] >= 0) and (self.code_part[i] <= 5)):
-                print(self.code_part[i])
                 continue
             else:
                 print("Integers have to be from 0 to 5")
@@ -85,8 +84,17 @@ class TryRow(Row):
     def print_TryRow(self):
         c = self.code_part
         r = self.response_part
-        print(f"{self.try_num}      | {c[0]} | {c[1]} | {c[2]} | {c[3]}  ||  {r[0]} | {r[1]} | {r[2]} | {r[3]}")
+        try_num_str = str(self.try_num)
+        if (self.try_num < 10):
+            try_num_str = " " + try_num_str
+            
+        print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} ||  {r[0]} | {r[1]} | {r[2]} | {r[3]}")
+
+cr = CodeRow()
+print(cr.code_part)
+cr.print_CodeRow()
 
 get_try_list = TryRow(10)
 gt = get_try_list.get_try()
 print(gt, get_try_list.code_part)
+get_try_list.print_TryRow()
