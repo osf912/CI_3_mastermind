@@ -12,9 +12,9 @@ class Row:
     code_part = [0,0,0,0]
     response_part = [0,0,0,0]
 
-def __init__(self, code):
-    self.code_part = code
-    self.response_part = [0,0,0,0]
+    def __init__(self, code):
+        self.code_part = code
+        self.response_part = [0,0,0,0]
 
 class CodeRow(Row):
     """
@@ -29,7 +29,7 @@ class CodeRow(Row):
         rand_list = []
         for i in range(4):
             rand_list.append(randint(0,5))
-        Row.__init__(rand_list)
+        super().__init__(rand_list)
         self.response_part = [2,2,2,2]
     
     def print_CodeRow(self):
@@ -40,30 +40,53 @@ class TryRow(Row):
     A TryRow is the try to find the code in the game
     """
     def __init__(self, try_num):
-        super().__init__(self, [0, 0, 0, 0])
-        self.try_num = try_num # Try Number for print-method
-
-    def getTry():
+        super().__init__(self)
+        self.try_num = try_num # Try number for print-method
+    
+    def check_range(self):
         """
-        Ask the new try from the user
+        Check, if the Integers in the code_part list are in the code range (0-5)
         """
-        try = input("Enter try: (4 comma separated Numbers (0-5)")
-        check_try(try)
+        for i in range(4):
+            if ((self.code_part[i] >= 0) and (self.code_part[i] <= 5)):
+                print(self.code_part[i])
+                continue
+            else:
+                print("Integers have to be from 0 to 5")
+                return False
+            
+        return True
 
-        return try
+    def get_try(self):
+        """
+        Ask a new try from the user
+        """
+        while(True):
+            try_str = input("Enter try: (4 comma separated Numbers (0-5)): ")
+            try_list = try_str.split(',')
+            
+            if (len(try_list) != 4):
+                print("Please type exactly 4 code numbers: ")
+                continue
 
-    def check_try(try).
+            try:
+                for i in range(len(try_list)):
+                    try_list[i] = int(try_list[i])
+                self.code_part = try_list # now the code_part list is a list of integers
+            except:
+                print("Please enter Integers from 0 to 5")
+            else:
+                if(self.check_range()): 
+                    return True
 
     def get_response(self, response_part):
         self.response_part = response_part
 
-    def print_TryRow():
+    def print_TryRow(self):
         c = self.code_part
         r = self.response_part
         print(f"{self.try_num}      | {c[0]} | {c[1]} | {c[2]} | {c[3]}  ||  {r[0]} | {r[1]} | {r[2]} | {r[3]}")
 
-code = CodeRow()
-code.print_CodeRow()
-
-try = TryRow()
-try.getTr
+get_try_list = TryRow(10)
+gt = get_try_list.get_try()
+print(gt, get_try_list.code_part)
