@@ -9,12 +9,26 @@ class Row:
         1 -> there is a correct code in the list, but not the right position
         0 -> no response
     """
-    code_part = [0,0,0,0]
-    response_part = [0,0,0,0]
+    __code_part = [0,0,0,0]
+    __response_part = [0,0,0,0]
 
     def __init__(self, code):
         self.code_part = code
         self.response_part = [0,0,0,0]
+
+
+    def get_code_part(self):
+        return self.__code_part
+    
+    def set_code_part(self, code_list):
+        self.__code_part = code_list
+
+    def get_response_part(self):
+        return self.__response_part
+    
+    def set_response_part(self, response_list):
+        self.__response_part = response_list
+    
 
 class CodeRow(Row):
     """
@@ -51,8 +65,9 @@ class TryRow(Row):
         """
         Check, if the Integers in the code_part list are in the code range (0-5)
         """
+        cp = self.get_code_part()
         for i in range(4):
-            if ((self.code_part[i] >= 0) and (self.code_part[i] <= 5)):
+            if ((cp[i] >= 0) and (cp[i] <= 5)):
                 continue
             else:
                 print("Integers have to be from 0 to 5")
@@ -75,7 +90,7 @@ class TryRow(Row):
             try:
                 for i in range(len(try_list)):
                     try_list[i] = int(try_list[i])
-                self.code_part = try_list # now the code_part list is a list of integers
+                self.set_code_part(try_list) # now the code_part list is a list of integers
             except:
                 print("Please enter Integers from 0 to 5")
             else:
@@ -83,16 +98,21 @@ class TryRow(Row):
                     return True
 
     def get_response(self, response_part):
-        self.response_part = response_part
+        self.set_response_part(response_part)
 
-    def print_TryRow(self):
-        c = self.code_part
-        r = self.response_part
+    def print_try(self):
+        c = self.get_code_part()
+        r = self.get_response_part()
         try_num_str = str(self.try_num)
         if (self.try_num < 10):
             try_num_str = " " + try_num_str
             
-        print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} ||  {r[0]} | {r[1]} | {r[2]} | {r[3]} |")
+        print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} | | {r[0]} | {r[1]} | {r[2]} | {r[3]} |")
+
+# class MastermindGame:
+
+
+
 
 cr = CodeRow()
 cr.print_covered()
@@ -100,4 +120,4 @@ cr.print_solved()
 
 get_try_list = TryRow(8)
 gt = get_try_list.get_try()
-get_try_list.print_TryRow()
+get_try_list.print_try()
