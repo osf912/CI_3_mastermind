@@ -32,8 +32,12 @@ class CodeRow(Row):
         super().__init__(rand_list)
         self.response_part = [2,2,2,2]
     
-    def print_CodeRow(self):
+    def print_covered(self):
         print("Code:   | X | X | X | X |")
+    
+    def print_solved(self):
+        cr = self.code_part
+        print(f"Code:   | {cr[0]} | {cr[1]} | {cr[2]} | {cr[3]} |")
     
 class TryRow(Row):
     """
@@ -88,13 +92,12 @@ class TryRow(Row):
         if (self.try_num < 10):
             try_num_str = " " + try_num_str
             
-        print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} ||  {r[0]} | {r[1]} | {r[2]} | {r[3]}")
+        print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} ||  {r[0]} | {r[1]} | {r[2]} | {r[3]} |")
 
 cr = CodeRow()
-print(cr.code_part)
-cr.print_CodeRow()
+cr.print_covered()
+cr.print_solved()
 
-get_try_list = TryRow(10)
+get_try_list = TryRow(8)
 gt = get_try_list.get_try()
-print(gt, get_try_list.code_part)
 get_try_list.print_TryRow()
