@@ -1,5 +1,4 @@
 from random import randint
-import pprint
 
 class Row:
     """
@@ -136,6 +135,17 @@ class MastermindGame:
                 self.__board[i].print_try()
             self.__board[13].print_solved()
             print("-----------------------------------")
+
+    def calculate_response(self, try_num):
+        code = self.__board[0].get_code_part()
+        try = self.__board[try_num].get_code_part()
+        response = []
+
+        # calculate response
+
+        self.__board[try_num].set_response_part(response)
+
+    
 
 
 # cr = CodeRow()
