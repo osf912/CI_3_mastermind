@@ -1,8 +1,9 @@
 from random import randint
+import pprint
 
 class Row:
     """
-    A Row is a line in the game with a codepart ( a list of
+    A Row is a line in the game with a codepart (a list of
     4 numbers (0-5) (6 colors in the origin game) and a response
     part, where the responses are 
         2 -> there is one code at the right position
@@ -16,7 +17,6 @@ class Row:
         self.code_part = code
         self.response_part = [0,0,0,0]
 
-
     def get_code_part(self):
         return self.__code_part
     
@@ -29,7 +29,6 @@ class Row:
     def set_response_part(self, response_list):
         self.__response_part = response_list
     
-
 class CodeRow(Row):
     """
     A CodeRow is the row with the code to find in the
@@ -109,15 +108,44 @@ class TryRow(Row):
             
         print(f"{try_num_str}      | {c[0]} | {c[1]} | {c[2]} | {c[3]} | | {r[0]} | {r[1]} | {r[2]} | {r[3]} |")
 
-# class MastermindGame:
+class MastermindGame:
+    """
+    The game class itself. Initialize game board, order the processes and give feedback to the tries. 
+    """
+    __board = []
+
+    def __init__(self):
+        """
+        The game board is a CodeRow (covered) and 12 tries. The 13. Row is the solution of the code, so a
+        CodeRow (solved)
+        """
+        cr = CodeRow()
+        self.__board.append(cr)
+        for i in range(1,13):
+            self.__board.append(TryRow(i))
+        self.__board.append(cr)
+    
+    def print_board(self, num):
+        print("-----------------------------------")
+        self.__board[0].print_covered()
+        if (num > 0) and (num <= 12):
+            for i in range(1,num):
+                self.__board[i].print_try()
+        else:
+            for i in range(1,13):
+                self.__board[i].print_try()
+            self.__board[13].print_solved()
+            print("-----------------------------------")
 
 
+# cr = CodeRow()
+# cr.print_covered()
+# cr.print_solved()
 
+# get_try_list = TryRow(8)
+# gt = get_try_list.get_try()
+# get_try_list.print_try()
 
-cr = CodeRow()
-cr.print_covered()
-cr.print_solved()
-
-get_try_list = TryRow(8)
-gt = get_try_list.get_try()
-get_try_list.print_try()
+mmg = MastermindGame()
+mmg.print_board(3)
+mmg.print_board(13)
