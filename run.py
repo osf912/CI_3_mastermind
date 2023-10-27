@@ -112,6 +112,7 @@ class MastermindGame:
     The game class itself. Initialize game board, order the processes and give feedback to the tries. 
     """
     __board = []
+    __solved_counter = 0
 
     def __init__(self):
         """
@@ -137,15 +138,41 @@ class MastermindGame:
             print("-----------------------------------")
 
     def calculate_response(self, try_num):
-        code = self.__board[0].get_code_part()
-        try = self.__board[try_num].get_code_part()
+ #       code = self.__board[0].get_code_part()
+ #       trial = self.__board[try_num].get_code_part()
+        code = [1,2,3,4]
+        trial = [1,4,3,0]
         response = []
+        pop_list = []
 
-        # calculate response
+        # check for right code on right position
+        for i in range(4):
+            if (code[i] == trial[i]):
+                pop_list.append(i)
+                response.append(2)
 
-        self.__board[try_num].set_response_part(response)
+        # delete them from the lists
+        for i in range(len(pop_list)):
+            code.pop(i)
+            trial.pop(i)
+        pop_list = []
 
+        # code & try are empty -> you won, otherwise check on right code at wrong position
+        if code != []:
+            for i in range(len(code)):
+                for j in range(len(code)):
+                    if (code[i] == trial[j]):
+                        response.append(1)
+
+#        self.__board[try_num].set_response_part(response)
+        print(response)
+
+    def clear_board(self):
+        for i in range(14):
+            self.__board[i].set_code_part([0,0,0,0])
+            self.__board[i].set_response_part([0,0,0,0])
     
+
 
 
 # cr = CodeRow()
@@ -157,5 +184,4 @@ class MastermindGame:
 # get_try_list.print_try()
 
 mmg = MastermindGame()
-mmg.print_board(3)
-mmg.print_board(13)
+mmg.calculate_response(3)
