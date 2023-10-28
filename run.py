@@ -62,10 +62,10 @@ class TryRow(Row):
     A TryRow is the try to find the code in the game
     """
     def __init__(self, try_num):
-        super().__init__(self)
+        super().__init__([0,0,0,0])
         self.try_num = try_num # Try number for print-method
     
-    def check_range(self):
+    def __check_range(self):
         """
         Check, if the Integers in the code_part list are in the code range (0-5)
         """
@@ -98,7 +98,7 @@ class TryRow(Row):
             except:
                 print("Please enter Integers from 0 to 5")
             else:
-                if(self.check_range()): 
+                if(self.__check_range()): 
                     return True
 
     def print_try(self):
@@ -114,14 +114,14 @@ class MastermindGame:
     """
     The game class itself. Initialize game board, order the processes and give feedback to the tries. 
     """
-    __board = []
-    __solved_counter = 0
 
     def __init__(self):
         """
         The game board is a CodeRow (covered) and 12 tries. The 13. Row is the solution of the code, so a
         CodeRow (solved)
         """
+        self.__board = []
+        self.__solved_counter = 0
         cr = CodeRow()
         self.__board.append(cr)
         for i in range(1,13):
@@ -205,8 +205,11 @@ def main():
 
 # main()
 
-row = Row([5,0,5,0])
+row = TryRow(3)
+print(row.get_code_part())
 row.set_code_part([4,3,2,1])
 row.set_response_part([2,2,1,0])
 print(row.get_code_part())
 print(row.get_response_part())
+row.get_try()
+row.print_try()
