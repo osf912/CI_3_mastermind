@@ -13,8 +13,8 @@ class Row:
     __response_part = [0,0,0,0]
 
     def __init__(self, code):
-        self.code_part = code
-        self.response_part = [0,0,0,0]
+        self.__code_part = code
+        self.__response_part = [0,0,0,0]
 
     def get_code_part(self):
         return self.__code_part
@@ -50,6 +50,12 @@ class CodeRow(Row):
     def print_solved(self):
         cr = self.code_part
         print(f"Code:   | {cr[0]} | {cr[1]} | {cr[2]} | {cr[3]} |")
+
+    def new_code(self):
+        rand_list = []
+        for i in range(4):
+            rand_list.append(randint(0,5))
+        self.set_code_part(rand_list)
     
 class TryRow(Row):
     """
@@ -95,9 +101,6 @@ class TryRow(Row):
                 if(self.check_range()): 
                     return True
 
-    def get_response(self, response_part):
-        self.set_response_part(response_part)
-
     def print_try(self):
         c = self.get_code_part()
         r = self.get_response_part()
@@ -127,21 +130,19 @@ class MastermindGame:
     
     def print_board(self, num):
         print("-----------------------------------")
-        self.__board[0].print_covered()
+        self.get_board(0).print_covered()
         if (num > 0) and (num <= 12):
             for i in range(1,num):
-                self.__board[i].print_try()
+                self.get_board(i).print_try()
         else:
             for i in range(1,13):
-                self.__board[i].print_try()
-            self.__board[13].print_solved()
+                self.get_board(i).print_try()
+            self.get_board(13).print_solved()
             print("-----------------------------------")
 
     def calculate_response(self, try_num):
- #       code = self.__board[0].get_code_part()
- #       trial = self.__board[try_num].get_code_part()
-        code = [1,2,3,4]
-        trial = [1,4,3,0]
+        code = self.__board[0].get_code_part()
+        trial = self.__board[try_num].get_code_part()
         response = []
         pop_list = []
 
@@ -164,24 +165,48 @@ class MastermindGame:
                     if (code[i] == trial[j]):
                         response.append(1)
 
-#        self.__board[try_num].set_response_part(response)
-        print(response)
+        # add trailing zeros
+        if (len(response) != 4):
+            for i in range(3 - len(response)):
+                response.append(0)
+
+        self.__board[try_num].set_response_part(response)
 
     def clear_board(self):
         for i in range(14):
             self.__board[i].set_code_part([0,0,0,0])
             self.__board[i].set_response_part([0,0,0,0])
     
+    def inc_solved_counter(self):
+        __solved_counter += 1
+    
+    def get_solved_counter(self):
+        return self.__solved_counter
 
+    def get_board(self,num):
+        if (num>=0 and num<=len(self.__board)):
+            return self.__board[num]
+        else:
+            return self.board
 
+def main():
+    mmg = MastermindGame()
+    for i in range(1,14):   
+        mmg.get_board(i).get_try()
+        mmg.calculate_response(i)
+        mmg.print_board(i)
+        if mmg.get_board(i).get_response() == [2,2,2,2]:
+            print("-----------------------------------")
+            print("            You won!               ")
+            print("-----------------------------------")
+            mmg.inc_solved_counter()
+            break
+    print("end")
 
-# cr = CodeRow()
-# cr.print_covered()
-# cr.print_solved()
+# main()
 
-# get_try_list = TryRow(8)
-# gt = get_try_list.get_try()
-# get_try_list.print_try()
-
-mmg = MastermindGame()
-mmg.calculate_response(3)
+row = Row([5,0,5,0])
+row.set_code_part([4,3,2,1])
+row.set_response_part([2,2,1,0])
+print(row.get_code_part())
+print(row.get_response_part())
