@@ -111,7 +111,7 @@ class TryRow(Row):
             else:
                 print("Integers have to be from 0 to 5")
                 return False
-            return True
+        return True
 
     def get_try(self):
         """
@@ -129,7 +129,7 @@ class TryRow(Row):
                 for i in range(len(try_list)):
                     try_list[i] = int(try_list[i])
                 self.set_code_part(try_list)
-            except TypeError:
+            except ValueError:
                 print("Please enter Integers from 0 to 5")
             else:
                 if self.__check_range():
