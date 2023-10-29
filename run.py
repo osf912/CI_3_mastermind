@@ -9,9 +9,6 @@ class Row:
         1 -> there is a correct code in the list, but not the right position
         0 -> no response
     """
-    __code_part = [0,0,0,0]
-    __response_part = [0,0,0,0]
-
     def __init__(self, code):
         self.__code_part = code
         self.__response_part = [0,0,0,0]
@@ -42,13 +39,13 @@ class CodeRow(Row):
         for i in range(4):
             rand_list.append(randint(0,5))
         super().__init__(rand_list)
-        self.response_part = [2,2,2,2]
+        self.set_response_part([2,2,2,2])
     
     def print_covered(self):
         print("Code:   | X | X | X | X |")
     
     def print_solved(self):
-        cr = self.code_part
+        cr = self.get_code_part()
         print(f"Code:   | {cr[0]} | {cr[1]} | {cr[2]} | {cr[3]} |")
 
     def new_code(self):
@@ -129,22 +126,26 @@ class MastermindGame:
         self.__board.append(cr)
     
     def print_board(self, num):
-        print("-----------------------------------")
+        print("-------------------------------------------")
         self.get_board(0).print_covered()
-        if (num > 0) and (num <= 12):
+        if (num > 0) and (num <= 13):
             for i in range(1,num):
                 self.get_board(i).print_try()
         else:
             for i in range(1,13):
                 self.get_board(i).print_try()
             self.get_board(13).print_solved()
-            print("-----------------------------------")
+            print("-------------------------------------------")
 
     def calculate_response(self, try_num):
-        code = self.__board[0].get_code_part()
-        trial = self.__board[try_num].get_code_part()
         response = []
         pop_list = []
+
+        # copy lists code and trial to not change the originals
+        code = []
+        trial = []
+        code.extend(self.get_board(0).get_code_part())
+        trial.extend(self.get_board(try_num).get_code_part())
 
         # check for right code on right position
         for i in range(4):
@@ -153,24 +154,33 @@ class MastermindGame:
                 response.append(2)
 
         # delete them from the lists
-        for i in range(len(pop_list)):
+        for i in reversed(pop_list):
             code.pop(i)
             trial.pop(i)
         pop_list = []
 
         # code & try are empty -> you won, otherwise check on right code at wrong position
         if code != []:
-            for i in range(len(code)):
-                for j in range(len(code)):
+            i = j = (len(code)-1)
+            while (i >= 0):
+                while (j >= 0):
                     if (code[i] == trial[j]):
                         response.append(1)
+                        code.pop(i)
+                        trial.pop(j)
+                        i = j = (len(code)-1)
+                    else:
+                        j -= 1
+                i -= 1
+                j = len(code)-1
+        else:
+            self.get_board(try_num).set_response_part(response)
 
-        # add trailing zeros
-        if (len(response) != 4):
-            for i in range(3 - len(response)):
+        # add trailing zeros if list is shorter
+        if (len(response) < 4):
+            for i in range(4 - len(response)):
                 response.append(0)
-
-        self.__board[try_num].set_response_part(response)
+        self.get_board(try_num).set_response_part(response)
 
     def clear_board(self):
         for i in range(14):
@@ -178,7 +188,7 @@ class MastermindGame:
             self.__board[i].set_response_part([0,0,0,0])
     
     def inc_solved_counter(self):
-        __solved_counter += 1
+        self.__solved_counter += 1
     
     def get_solved_counter(self):
         return self.__solved_counter
@@ -187,29 +197,22 @@ class MastermindGame:
         if (num>=0 and num<=len(self.__board)):
             return self.__board[num]
         else:
-            return self.board
+            return self.__board
 
 def main():
     mmg = MastermindGame()
-    for i in range(1,14):   
+    for i in range(1,13): 
+        mmg.print_board(i)  
         mmg.get_board(i).get_try()
         mmg.calculate_response(i)
-        mmg.print_board(i)
-        if mmg.get_board(i).get_response() == [2,2,2,2]:
-            print("-----------------------------------")
-            print("            You won!               ")
-            print("-----------------------------------")
+        mmg.get_board(i).print_try()
+        if (mmg.get_board(i).get_response_part() == [2, 2, 2, 2]):
+            print("-------------------------------------------")
+            print("                You won!                   ")
+            print("-------------------------------------------")
             mmg.inc_solved_counter()
             break
+    mmg.print_board(-1)
     print("end")
 
-# main()
-
-row = TryRow(3)
-print(row.get_code_part())
-row.set_code_part([4,3,2,1])
-row.set_response_part([2,2,1,0])
-print(row.get_code_part())
-print(row.get_response_part())
-row.get_try()
-row.print_try()
+main()
