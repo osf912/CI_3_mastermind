@@ -7,17 +7,17 @@ this is my project 3 Python terminal game "Mastermind", which runs in a mock ter
 ## How to play
 
 In this game you have to find a four-digit code of numbers from 0 - 5. in the boardgame there are
-pins of six colors.
+pegs of six colors.
 
 So you will be asked for your first guess. Type in a row of 4, comma-separated numbers (0 - 5).
 If you've typed a number out of range, or less or too much, as well as when you typed in a character
-you will be informed and have the chace to do it right.
+you will be informed and have the chance to do it right.
 
 ![Play game 1](./images_README/mmg1.png)
 
 When you gave your guess to the input, the computer gives back a response:
-* 2, for every number, that is on the right position (black pin)
-* 1, for every that is in the code, but on the wrong position (white pin)
+* 2, for every number, that is on the right position (black peg)
+* 1, for every that is in the code, but on the wrong position (white peg)
 * 0, trailling zeros, to fill the list
 With this informations you guess again, until you've found the code.
 
@@ -29,7 +29,20 @@ At the end the solved_counter is shown to you and you will be asked, if you want
 
 ### Existing Features
 
+* Randomly generated code, covered for the player.
+* User input (trial) is vidated and repeated as long it isn't right in the sense of type, count or range of integers.
+* A response, following the rules, is generated.
+* This will be repeated for 12 trials .
+* If you crack the code before, or after the twelveth trial, the Code is shown to you.
+* Solved games of a session are counted.
+* Data maintained in class instances (hierachic organized classes)
+
 ### Future Features
+
+* The solved games counter could be changed in :"You've solved 3 of 7 played games in this session.", so __solved _counter will be a list
+    of counter [solved_games ,played_games].
+* The range of the code can vary, like a decimal code (0-9), or a hexadecimal code (0-F)
+* The length of the code could vary 5 or more digits.
 
 ## Data Model
 
@@ -87,6 +100,16 @@ I've tested every Class and it's methods with a separate test run.
 This function was tested by playing the game (like a lot ;-) to see how the calculate_response() methods works. In the process I've tried to polish the 'look' of the game, as far as it is possible for a terminal based game.
 
 ### Bugs
+
+The most bugs I made, was in the calculate_response() method. The ones I've learned the most of were:
+
+* I have to copy the original lists to 'working' list, which will be transformed in algorithm (corresponding digits will be pop.ed out of the lists)
+* The part were 'the right numbers, but on the wrong position' are searched, I've tried to solve with nested for-loops, what doesn't worked
+    the way I 've hoped. Using while-loops changed this immediately and lead to a solution.
+* Even if Python has no private attributes or methods, I've changed in the process to the use of 'dunder'-attributes and getters and setters, 
+    because it seems more consequential to the OOP approach.
+* Use a linter earlier in the process.
+* Think about (or better write along) the README, while programming... (I've learned it the hard way ;-)
 
 ### Remaining Bugs
 
