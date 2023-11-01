@@ -118,7 +118,7 @@ class TryRow(Row):
         Ask a new try from the user and check for correct type, count and range
         """
         while True:
-            try_str = input("Enter try: (4 comma separated Numbers (0-5)): ")
+            try_str = input("Enter try: (4 comma separated Numbers (0-5)): \n")
             try_list = try_str.split(',')
 
             if len(try_list) != 4:
@@ -285,9 +285,10 @@ def main():
                 print("\n")
                 mmg.inc_solved_counter()
                 break
+        mmg.print_board(-1)
         print(f"you have solved {mmg.get_solved_counter()}" +
               " games in this session.")
-        again = input("Do you want to play another one..? (y/n)  ")
+        again = input("Do you want to play another one..? (y/n)  \n")
         try:
             if again.lower() != 'y':
                 no_end = False
