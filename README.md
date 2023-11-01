@@ -30,10 +30,10 @@ At the end the solved_counter is shown to you and you will be asked, if you want
 ### Existing Features
 
 * Randomly generated code, covered for the player.
-* User input (trial) is vidated and repeated as long it isn't right in the sense of type, count or range of integers.
+* User input (trial) is validated and repeated as long as it isn't right in the sense of type, count or range of integers.
 * A response, following the rules, is generated.
 * This will be repeated for 12 trials .
-* If you crack the code before, or after the twelveth trial, the Code is shown to you.
+* If you crack the code or after the twelveth trial, the Code is shown to you.
 * Solved games of a session are counted.
 * Data maintained in class instances (hierachic organized classes)
 
@@ -51,9 +51,10 @@ twelve rows (TryRows) for the opponent to set his trials. At the end the
 CodeRow is shown to the other player.
 
 So the __board of my MastermindGame-Class is made of:
-    *  1x covered CodeRow
-    * 12x TryRows
-    *  1x uncovered CodeRow.
+
+*  1x covered CodeRow
+* 12x TryRows
+*  1x uncovered CodeRow.
 
 By the fact, that CodeRow and TryRows are basically Rows, they inherit 
 from the Class Row.
@@ -126,7 +127,15 @@ The most bugs I made, was in the calculate_response() method. The ones I've lear
 This project was deployed using Code Institute's mock terminal for Heroku.
 
 Steps to deployment:
-    * 
+
+* Add '\n' to the end of every input string.
+* Fill requirements.txt with command: pip3 freeze > requirements.txt
+* Push the final version to github
+* Create a new app in Heroku
+* Add buildpacks: python and node.js in the Settings
+* Choose deployment method:Connect to GitHub
+* Enter repository name and connect
+* Finally depoly branch
 
 ## Credits
 * Code Institute for the opportunity to learn Python
